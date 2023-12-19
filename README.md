@@ -16,6 +16,10 @@ cd backend
 npm install
 ```
 
+## Configuration
+
+Before running the app, make sure to update the MongoDB connection string in the backend/config.js file. Replace the existing URL with your own MongoDB URL, which will be provided when you create your database.
+
 ## Backend Server
 
 To start the backend server, navigate to the backend directory and run:
