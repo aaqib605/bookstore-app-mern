@@ -76,6 +76,18 @@ app.post("/books", async (req, res) => {
   }
 });
 
+app.delete("/books/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedBook = await Book.findByIdAndDelete(id);
+
+    return res.status(200).json({ message: "Book deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Error deleting book", error });
+  }
+});
+
 mongoose
   .connect(MONGO_URI)
   .then(() => {
