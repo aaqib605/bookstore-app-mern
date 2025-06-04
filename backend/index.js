@@ -17,12 +17,21 @@ app.get("/", (req, res) => {
 app.get("/books", async (req, res) => {
   try {
     const books = await Book.find();
+
+    if (!books || books.length === 0) {
+      return res.status(404).json({ message: "No books found" });
+    }
+
     res.status(200).json({
       count: books.length,
       books,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching books", error });
+    console.log("Error fetching books:", error);
+
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 });
 
@@ -32,9 +41,17 @@ app.get("/books/:id", async (req, res) => {
   try {
     const book = await Book.findById(id);
 
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
     return res.status(200).json(book);
   } catch (error) {
-    return res.status(500).json({ message: "Error fetching book", error });
+    console.log("Error fetching book:", error);
+
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 });
 
@@ -54,9 +71,17 @@ app.put("/books/:id", async (req, res) => {
       { new: true }
     );
 
+    if (!updatedBook) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
     return res.status(201).json(updatedBook);
   } catch (error) {
-    return res.status(500).json({ message: "Error updating book", error });
+    console.log("Error updating book:", error);
+
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 });
 
@@ -70,9 +95,17 @@ app.post("/books", async (req, res) => {
 
     const newBook = await Book.create({ title, author, publishYear });
 
+    if (!newBook) {
+      return res.status(500).json({ message: "Error creating book" });
+    }
+
     res.status(201).json(newBook);
   } catch (error) {
-    res.status(500).json({ message: "Error creating book", error });
+    console.log("Error creating book:", error);
+
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 });
 
@@ -82,9 +115,17 @@ app.delete("/books/:id", async (req, res) => {
   try {
     const deletedBook = await Book.findByIdAndDelete(id);
 
+    if (!deletedBook) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
     return res.status(200).json({ message: "Book deleted successfully" });
   } catch (error) {
-    return res.status(500).json({ message: "Error deleting book", error });
+    console.log("Error deleting book:", error);
+
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 });
 
