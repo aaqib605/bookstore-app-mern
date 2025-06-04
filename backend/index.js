@@ -38,6 +38,28 @@ app.get("/books/:id", async (req, res) => {
   }
 });
 
+app.put("/books/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const { title, author, publishYear } = req.body;
+
+    const updatedBook = await Book.findByIdAndUpdate(
+      id,
+      {
+        title,
+        author,
+        publishYear,
+      },
+      { new: true }
+    );
+
+    return res.status(201).json(updatedBook);
+  } catch (error) {
+    return res.status(500).json({ message: "Error updating book", error });
+  }
+});
+
 app.post("/books", async (req, res) => {
   try {
     const { title, author, publishYear } = req.body;
