@@ -26,6 +26,18 @@ app.get("/books", async (req, res) => {
   }
 });
 
+app.get("/books/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const book = await Book.findById(id);
+
+    return res.status(200).json(book);
+  } catch (error) {
+    return res.status(500).json({ message: "Error fetching book", error });
+  }
+});
+
 app.post("/books", async (req, res) => {
   try {
     const { title, author, publishYear } = req.body;
