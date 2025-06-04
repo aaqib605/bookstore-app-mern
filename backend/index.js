@@ -14,6 +14,18 @@ app.get("/", (req, res) => {
   res.status(200).send("<h1>Welcome to the backend server of bookstore!</h1>");
 });
 
+app.get("/books", async (req, res) => {
+  try {
+    const books = await Book.find();
+    res.status(200).json({
+      count: books.length,
+      books,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching books", error });
+  }
+});
+
 app.post("/books", async (req, res) => {
   try {
     const { title, author, publishYear } = req.body;
