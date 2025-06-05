@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
@@ -16,10 +17,15 @@ export default function CreateBook() {
 
     try {
       await axios.post("http://localhost:8000/books", bookDetails);
+
+      toast.success("Book added successfully");
     } catch (error) {
+      toast.error("Error adding book");
+
       console.log("Error adding book:", error);
     } finally {
       setLoading(false);
+
       navigate("/");
     }
   }

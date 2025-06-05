@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
@@ -17,11 +18,16 @@ export default function EditBook() {
     setLoading(true);
 
     try {
-      await axios.put(`http://localhost:8000/books${id}`, bookDetails);
+      await axios.put(`http://localhost:8000/books/${id}`, bookDetails);
+
+      toast.success("Book updated successfully");
     } catch (error) {
+      toast.error("Error updating book");
+
       console.log("Error editing book:", error);
     } finally {
       setLoading(false);
+
       navigate("/");
     }
   }

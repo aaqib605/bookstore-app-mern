@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
@@ -20,11 +21,17 @@ export default function DeleteBook() {
 
       setLoading(false);
 
+      toast.success("Book deleted successfully");
+
       navigate("/");
     } catch (error) {
+      toast.error("Error deleting book");
+
       console.log("Error deleting book:", error);
     } finally {
       setLoading(false);
+
+      navigate("/");
     }
   }
 
