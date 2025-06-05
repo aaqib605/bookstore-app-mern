@@ -6,7 +6,7 @@ import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
 
 export default function BookDetails() {
-  const [book, setBook] = useState({});
+  const [book, setBook] = useState({ title: "", author: "", publishYear: "" });
   const [loading, setLoading] = useState(false);
 
   const { id } = useParams();

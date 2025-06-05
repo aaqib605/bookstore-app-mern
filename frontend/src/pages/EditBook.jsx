@@ -7,7 +7,11 @@ import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
 
 export default function EditBook() {
-  const [bookDetails, setBookDetails] = useState({});
+  const [bookDetails, setBookDetails] = useState({
+    title: "",
+    author: "",
+    publishYear: "",
+  });
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
