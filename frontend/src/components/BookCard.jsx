@@ -5,16 +5,24 @@ import { BiUserCircle, BiShow } from "react-icons/bi";
 import { CiCalendarDate } from "react-icons/ci";
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsInfoCircle } from "react-icons/bs";
-import { MdOutlineDelete } from "react-icons/md";
+import { MdFavorite, MdFavoriteBorder, MdOutlineDelete } from "react-icons/md";
 
 import BookModal from "./BookModal";
 
-export default function BookCard({ book }) {
+export default function BookCard({ book, isFavorite, onToggleFavorite }) {
   const [showModal, setShowModal] = useState(false);
 
   return (
     <div className="border-2 border-gray-500 rounded-lg px-4 py-2 m-4 relative hover:shadow-xl">
-      <h4 className="my-2 text-gray-500">{book._id}</h4>
+      <button
+        type="button"
+        aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+        className="absolute right-4 top-4 cursor-pointer text-2xl text-red-500 hover:text-red-700"
+        onClick={() => onToggleFavorite(book._id)}
+      >
+        {isFavorite ? <MdFavorite /> : <MdFavoriteBorder />}
+      </button>
+      <h4 className="my-2 pr-10 text-gray-500">{book._id}</h4>
       <div className="flex justify-start items-center gap-x-2">
         <PiBookOpenTextLight className="text-red-300 text-2xl" />
         <h2 className="my-1">{book.title}</h2>
