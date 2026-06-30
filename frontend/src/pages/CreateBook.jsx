@@ -11,6 +11,7 @@ export default function CreateBook() {
     title: "",
     author: "",
     publishYear: "",
+    notes: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -89,6 +90,20 @@ export default function CreateBook() {
             type="number"
             name="publishYear"
             value={bookDetails.publishYear}
+            onChange={(e) => handleInputChange(e)}
+            className="border-2 border-gray-500 px-4 py-2  w-full"
+          />
+        </div>
+
+        <div className="my-4">
+          <label className="text-xl mr-4 text-gray-700" htmlFor="notes">
+            Notes
+          </label>
+          <textarea
+            id="notes"
+            name="notes"
+            rows="4"
+            value={bookDetails.notes}
             onChange={(e) => handleInputChange(e)}
             className="border-2 border-gray-500 px-4 py-2  w-full"
           />

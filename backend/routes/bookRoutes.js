@@ -100,7 +100,7 @@ router.put("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const { title, author, publishYear } = req.body;
+    const { title, author, publishYear, notes = "" } = req.body;
 
     const updatedBook = await Book.findByIdAndUpdate(
       id,
@@ -108,6 +108,7 @@ router.put("/:id", async (req, res) => {
         title,
         author,
         publishYear,
+        notes,
       },
       { new: true }
     );
@@ -128,13 +129,13 @@ router.put("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { title, author, publishYear } = req.body;
+    const { title, author, publishYear, notes = "" } = req.body;
 
     if (!title || !author || !publishYear) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const newBook = await Book.create({ title, author, publishYear });
+    const newBook = await Book.create({ title, author, publishYear, notes });
 
     if (!newBook) {
       return res.status(500).json({ message: "Error creating book" });

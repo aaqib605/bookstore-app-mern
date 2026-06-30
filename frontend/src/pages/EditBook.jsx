@@ -11,6 +11,7 @@ export default function EditBook() {
     title: "",
     author: "",
     publishYear: "",
+    notes: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -52,9 +53,9 @@ export default function EditBook() {
       try {
         const response = await axios.get(`http://localhost:8000/books/${id}`);
 
-        const { title, author, publishYear } = response.data;
+        const { title, author, publishYear, notes = "" } = response.data;
 
-        setBookDetails({ title, author, publishYear });
+        setBookDetails({ title, author, publishYear, notes });
       } catch (error) {
         console.error("Error fetching book details:", error);
       } finally {
@@ -111,6 +112,20 @@ export default function EditBook() {
             type="number"
             name="publishYear"
             value={bookDetails.publishYear}
+            onChange={(e) => handleInputChange(e)}
+            className="border-2 border-gray-500 px-4 py-2  w-full"
+          />
+        </div>
+
+        <div className="my-4">
+          <label className="text-xl mr-4 text-gray-700" htmlFor="notes">
+            Notes
+          </label>
+          <textarea
+            id="notes"
+            name="notes"
+            rows="4"
+            value={bookDetails.notes}
             onChange={(e) => handleInputChange(e)}
             className="border-2 border-gray-500 px-4 py-2  w-full"
           />

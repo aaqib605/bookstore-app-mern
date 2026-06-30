@@ -6,7 +6,12 @@ import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
 
 export default function BookDetails() {
-  const [book, setBook] = useState({ title: "", author: "", publishYear: "" });
+  const [book, setBook] = useState({
+    title: "",
+    author: "",
+    publishYear: "",
+    notes: "",
+  });
   const [loading, setLoading] = useState(false);
 
   const { id } = useParams();
@@ -52,6 +57,12 @@ export default function BookDetails() {
           <div className="my-4">
             <span className="text-xl mr-4 text-gray-500">Publish Year</span>
             <span>{book.publishYear}</span>
+          </div>
+          <div className="my-4">
+            <span className="text-xl mr-4 text-gray-500">Notes</span>
+            <p className="mt-2 whitespace-pre-wrap">
+              {book.notes || "No notes added yet."}
+            </p>
           </div>
           <div className="my-4">
             <span className="text-xl mr-4 text-gray-500">Create Time</span>

@@ -14,6 +14,10 @@ const bookSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    notes: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true },
 );
