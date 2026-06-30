@@ -1,8 +1,32 @@
 import express from "express";
+import { GoogleGenAI } from "@google/genai";
 
 import { Book } from "../models/bookModel.js";
 
 const router = express.Router();
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+
+function buildBookSummaryPrompt(book) {
+  return `Write a crisp, spoiler-free summary of this book in 2 to 3 sentences.
+
+Title: ${book.title}
+Author: ${book.author}
+Published year: ${book.publishYear}`;
+}
+
+async function generateBookSummary(book) {
+  if (!process.env.GEMINI_API_KEY) {
+    throw new Error("GEMINI_API_KEY is not configured");
+  }
+
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const interaction = await ai.interactions.create({
+    model: GEMINI_MODEL,
+    input: buildBookSummaryPrompt(book),
+  });
+
+  return interaction.output_text?.trim();
+}
 
 router.get("/", async (req, res) => {
   try {
@@ -22,6 +46,33 @@ router.get("/", async (req, res) => {
     return res
       .status(500)
       .json({ message: "Internal server error", error: error.message });
+  }
+});
+
+router.get("/:id/summary", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const book = await Book.findById(id);
+
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    const summary = await generateBookSummary(book);
+
+    if (!summary) {
+      return res.status(502).json({ message: "No summary was generated" });
+    }
+
+    return res.status(200).json({ summary });
+  } catch (error) {
+    console.log("Error generating book summary:", error);
+
+    return res.status(500).json({
+      message: "Error generating book summary",
+      error: error.message,
+    });
   }
 });
 
